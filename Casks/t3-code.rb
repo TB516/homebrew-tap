@@ -28,7 +28,9 @@ cask "t3-code" do
     appimage = "#{staged_path}/#{appimage_name}"
 
     system("chmod", "+x", appimage)
-    system(appimage, "--appimage-extract")
+    Dir.chdir(staged_path) do
+      system(appimage, "--appimage-extract")
+    end
 
     xdg_data_home = ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"
     FileUtils.mkdir_p("#{xdg_data_home}/applications")
@@ -43,7 +45,7 @@ cask "t3-code" do
     SH
 
     desktop_file = "#{staged_path}/t3code.desktop"
-    FileUtils.cp("#{staged_path}/squashfs-root/t3code.desktop", desktop_file)
+    FileUtils.mv("#{staged_path}/squashfs-root/t3code.desktop", desktop_file)
 
     desktop_contents = File.read(desktop_file)
     desktop_contents.gsub!(/^Exec=.*$/, "Exec=#{HOMEBREW_PREFIX}/bin/t3code %U")
@@ -51,10 +53,14 @@ cask "t3-code" do
     desktop_contents.gsub!(/^X-AppImage-Version=.*\n/, "")
     File.write(desktop_file, desktop_contents)
 
-    FileUtils.cp(
+    FileUtils.mv(
       "#{staged_path}/squashfs-root/usr/share/icons/hicolor/1024x1024/apps/t3code.png",
       "#{staged_path}/t3code.png",
     )
+  end
+
+  postflight do
+    FileUtils.rm_rf("#{staged_path}/squashfs-root")
   end
 
   zap delete: [

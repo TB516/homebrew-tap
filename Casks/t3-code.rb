@@ -1,4 +1,4 @@
-cask "t3code" do
+cask "t3-code" do
   arch intel: "x86_64"
   os linux: "linux"
 

@@ -21,7 +21,7 @@ cask "t3-code" do
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/applications/t3code.desktop"
 
   artifact "squashfs-root/usr/share/icons/hicolor/1024x1024/apps/t3code.png",
-           target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/1024x1024/apps/t3code.png"
+           target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/512x512/apps/t3code.png"
 
   preflight do
     appimage_name = "T3-Code-#{version}-#{arch}.AppImage"

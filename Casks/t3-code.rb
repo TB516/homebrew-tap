@@ -15,12 +15,12 @@ cask "t3-code" do
     strategy :github_latest
   end
 
-  binary "t3code-wrapper", target: "t3code"
+  binary "squashfs-root/t3code", target: "t3code"
 
-  artifact "t3code.desktop",
+  artifact "squashfs-root/t3code.desktop",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/applications/t3code.desktop"
 
-  artifact "t3code.png",
+  artifact "squashfs-root/usr/share/icons/hicolor/1024x1024/apps/t3code.png",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/1024x1024/apps/t3code.png"
 
   preflight do
@@ -28,39 +28,23 @@ cask "t3-code" do
     appimage = "#{staged_path}/#{appimage_name}"
 
     system("chmod", "+x", appimage)
+
     Dir.chdir(staged_path) do
-      system(appimage, "--appimage-extract")
+      system("./#{appimage_name}", "--appimage-extract")
     end
 
     xdg_data_home = ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"
     FileUtils.mkdir_p("#{xdg_data_home}/applications")
     FileUtils.mkdir_p("#{xdg_data_home}/icons/hicolor/1024x1024/apps")
 
-    wrapper = "#{staged_path}/t3code-wrapper"
-    File.write(wrapper, <<~SH)
-      #!/bin/sh
-      export T3CODE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/t3code"
-      export T3CODE_DISABLE_AUTO_UPDATE=1
-      exec "#{HOMEBREW_PREFIX}/Caskroom/t3code/#{version}/#{appimage_name}" "$@"
-    SH
-
-    desktop_file = "#{staged_path}/t3code.desktop"
-    FileUtils.mv("#{staged_path}/squashfs-root/t3code.desktop", desktop_file)
-
+    desktop_file = "#{staged_path}/squashfs-root/t3code.desktop"
     desktop_contents = File.read(desktop_file)
-    desktop_contents.gsub!(/^Exec=.*$/, "Exec=#{HOMEBREW_PREFIX}/bin/t3code %U")
+
+    desktop_contents.gsub!(/^Exec=.*$/, "Exec=env T3CODE_HOME=#{xdg_data_home}/t3code T3CODE_DISABLE_AUTO_UPDATE=1 #{HOMEBREW_PREFIX}/bin/t3code %U")
     desktop_contents.gsub!(/^Name=.*$/, "Name=T3 Code")
     desktop_contents.gsub!(/^X-AppImage-Version=.*\n/, "")
+
     File.write(desktop_file, desktop_contents)
-
-    FileUtils.mv(
-      "#{staged_path}/squashfs-root/usr/share/icons/hicolor/1024x1024/apps/t3code.png",
-      "#{staged_path}/t3code.png",
-    )
-  end
-
-  postflight do
-    FileUtils.rm_rf("#{staged_path}/squashfs-root")
   end
 
   zap delete: [

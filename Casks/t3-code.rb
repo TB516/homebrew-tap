@@ -15,6 +15,8 @@ cask "t3-code" do
     strategy :github_latest
   end
 
+  depends_on arch: :x86_64
+
   binary "squashfs-root/t3code", target: "t3code"
   artifact "squashfs-root/t3code.desktop",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/applications/t3code.desktop"
@@ -38,8 +40,10 @@ cask "t3-code" do
     desktop_file = "#{staged_path}/squashfs-root/t3code.desktop"
     desktop_contents = File.read(desktop_file)
 
-    desktop_contents.gsub!(/^Exec=.*$/,
-                           "Exec=env T3CODE_HOME=#{xdg_data_home}/t3code T3CODE_DISABLE_AUTO_UPDATE=1 #{HOMEBREW_PREFIX}/bin/t3code %U")
+    start_env = "Exec=env T3CODE_HOME=#{xdg_data_home}/t3code T3CODE_DISABLE_AUTO_UPDATE=1"
+    start_command = "#{HOMEBREW_PREFIX}/bin/t3code %U"
+
+    desktop_contents.gsub!(/^Exec=.*$/, "#{start_env} #{start_command}")
     desktop_contents.gsub!(/^Name=.*$/, "Name=T3 Code")
     desktop_contents.gsub!(/^X-AppImage-Version=.*\n/, "")
 

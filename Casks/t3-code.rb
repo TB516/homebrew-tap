@@ -5,6 +5,8 @@ cask "t3-code" do
   version "0.0.21"
   sha256 "79009fb24a65f8924ec9a618ee88180a2d190ae58d45c129b1e58c9e24bf2c24"
 
+  depends_on arch: :x86_64
+
   url "https://github.com/pingdotgg/t3code/releases/download/v#{version}/T3-Code-#{version}-#{arch}.AppImage"
   name "T3 Code"
   desc "Minimal web GUI for coding agents"

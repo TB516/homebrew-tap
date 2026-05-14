@@ -52,6 +52,6 @@ cask "t3-code" do
 
   zap delete: [
     "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/t3code",
-    "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/t3code}",
+    "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/t3code",
   ]
 end

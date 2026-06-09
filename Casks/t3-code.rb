@@ -20,7 +20,7 @@ cask "t3-code" do
   binary "squashfs-root/t3code", target: "t3code"
   artifact "squashfs-root/t3code.desktop",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/applications/t3code.desktop"
-  artifact "squashfs-root/usr/share/icons/hicolor/1024x1024/apps/t3code.png",
+  artifact "squashfs-root/usr/share/icons/hicolor/512x512/apps/t3code.png",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/512x512/apps/t3code.png"
 
   preflight do
@@ -35,7 +35,7 @@ cask "t3-code" do
 
     xdg_data_home = ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"
     FileUtils.mkdir_p("#{xdg_data_home}/applications")
-    FileUtils.mkdir_p("#{xdg_data_home}/icons/hicolor/1024x1024/apps")
+    FileUtils.mkdir_p("#{xdg_data_home}/icons/hicolor/512x512/apps")
 
     desktop_file = "#{staged_path}/squashfs-root/t3code.desktop"
     desktop_contents = File.read(desktop_file)

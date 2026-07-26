@@ -50,7 +50,7 @@ cask "t3-code" do
     File.write(desktop_file, desktop_contents)
   end
 
-  zap delete: [
+  zap trash: [
     "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/t3code",
     "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/t3code",
   ]

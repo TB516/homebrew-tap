@@ -1,0 +1,60 @@
+cask "t3-code-nightly" do
+  arch intel: "x86_64"
+  os linux: "linux"
+
+  version "0.0.30-nightly.20260728.928"
+  sha256 "5a3c4a551f3c9a9f7efd1c97a5c6a328f2ec1d4c7b0f598fbb1dca67a67373e7"
+
+  url "https://github.com/pingdotgg/t3code/releases/download/v#{version}/T3-Code-#{version}-#{arch}.AppImage"
+  name "T3 Code Nightly"
+  desc "Nightly build of the minimal web GUI for coding agents"
+  homepage "https://github.com/pingdotgg/t3code"
+
+  livecheck do
+    url "https://github.com/pingdotgg/t3code"
+    regex(/^v?(\d+(?:\.\d+)+-nightly\.\d+\.\d+)$/i)
+    strategy :github_releases
+  end
+
+  depends_on arch: :x86_64
+
+  conflicts_with cask: "t3-code"
+
+  binary "squashfs-root/t3code", target: "t3code"
+  artifact "squashfs-root/t3code.desktop",
+           target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/applications/t3code.desktop"
+  artifact "squashfs-root/usr/share/icons/hicolor/512x512/apps/t3code.png",
+           target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/512x512/apps/t3code.png"
+
+  preflight do
+    appimage_name = "T3-Code-#{version}-#{arch}.AppImage"
+    appimage = "#{staged_path}/#{appimage_name}"
+
+    system("chmod", "+x", appimage)
+
+    Dir.chdir(staged_path) do
+      system("./#{appimage_name}", "--appimage-extract")
+    end
+
+    xdg_data_home = ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"
+    FileUtils.mkdir_p("#{xdg_data_home}/applications")
+    FileUtils.mkdir_p("#{xdg_data_home}/icons/hicolor/512x512/apps")
+
+    desktop_file = "#{staged_path}/squashfs-root/t3code.desktop"
+    desktop_contents = File.read(desktop_file)
+
+    start_env = "Exec=env T3CODE_HOME=#{xdg_data_home}/t3code T3CODE_DISABLE_AUTO_UPDATE=1"
+    start_command = "#{HOMEBREW_PREFIX}/bin/t3code %U"
+
+    desktop_contents.gsub!(/^Exec=.*$/, "#{start_env} #{start_command}")
+    desktop_contents.gsub!(/^Name=.*$/, "Name=T3 Code Nightly")
+    desktop_contents.gsub!(/^X-AppImage-Version=.*\n/, "")
+
+    File.write(desktop_file, desktop_contents)
+  end
+
+  zap trash: [
+    "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/t3code",
+    "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/t3code",
+  ]
+end

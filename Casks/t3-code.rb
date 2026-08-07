@@ -2,8 +2,8 @@ cask "t3-code" do
   arch intel: "x86_64"
   os linux: "linux"
 
-  version "0.0.31"
-  sha256 "02a4e4a1229e4309aa9772fd17949b0f55f2a9e172a9ed75722abd4e9d38672c"
+  version "0.0.32"
+  sha256 "492edcb48eef97309f34c4b70a8121b867c3ae89c2068c2e28bb393a8d822c22"
 
   url "https://github.com/pingdotgg/t3code/releases/download/v#{version}/T3-Code-#{version}-#{arch}.AppImage"
   name "T3 Code"

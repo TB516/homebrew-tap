@@ -12,7 +12,7 @@ cask "chatgpt" do
 
   livecheck do
     url "https://persistent.oaistatic.com/codex-app-prod/linux/deb/dists/stable/main/binary-#{arch}/Packages"
-    regex(/^Version:\\s*v?(\\d+(?:\\.\\d+)+)$/i)
+    regex(/^Version:\s*v?(\d+(?:\.\d+)+)$/i)
   end
 
   container type: :naked

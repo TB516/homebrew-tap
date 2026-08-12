@@ -40,7 +40,7 @@ cask "t3-code" do
     desktop_file = "#{staged_path}/squashfs-root/t3code.desktop"
     desktop_contents = File.read(desktop_file)
 
-    start_env = "Exec=env T3CODE_HOME=#{xdg_data_home}/t3code T3CODE_DISABLE_AUTO_UPDATE=1"
+    start_env = "Exec=env T3CODE_DISABLE_AUTO_UPDATE=1"
     start_command = "#{HOMEBREW_PREFIX}/bin/t3code %U"
 
     desktop_contents.gsub!(/^Exec=.*$/, "#{start_env} #{start_command}")

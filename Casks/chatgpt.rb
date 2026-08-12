@@ -12,7 +12,7 @@ cask "chatgpt" do
 
   livecheck do
     url "https://persistent.oaistatic.com/codex-app-prod/linux/deb/dists/stable/main/binary-#{arch}/Packages"
-    regex(/^Version:\s*v?(\d+(?:\.\d+)+)$/i)
+    regex(/^Version:\\s*v?(\\d+(?:\\.\\d+)+)$/i)
   end
 
   container type: :naked
@@ -42,6 +42,8 @@ cask "chatgpt" do
   end
 
   zap trash: [
-    "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/Codex",
+    ENV["CODEX_ELECTRON_USER_DATA_PATH"] ||
+      "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/Codex",
+    ENV["CODEX_HOME"] || "#{Dir.home}/.codex",
   ]
 end

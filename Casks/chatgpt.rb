@@ -44,6 +44,5 @@ cask "chatgpt" do
   zap trash: [
     ENV["CODEX_ELECTRON_USER_DATA_PATH"] ||
       "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/Codex",
-    ENV["CODEX_HOME"] || "#{Dir.home}/.codex",
   ]
 end

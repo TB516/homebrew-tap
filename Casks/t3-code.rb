@@ -1,6 +1,5 @@
 cask "t3-code" do
   arch intel: "x86_64"
-  os linux: "linux"
 
   version "0.0.33"
   sha256 "415c8648f43c3d22d572f27f2c50fdc8c310ea7fcde9537b903e1e2f1c8775a1"
@@ -15,6 +14,7 @@ cask "t3-code" do
     strategy :github_latest
   end
 
+  depends_on :linux
   depends_on arch: :x86_64
 
   binary "squashfs-root/t3code", target: "t3code"

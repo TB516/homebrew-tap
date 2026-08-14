@@ -15,6 +15,8 @@ cask "chatgpt-linux" do
     regex(/^Version:\s*v?(\d+(?:\.\d+)+)$/i)
   end
 
+  depends_on :linux
+
   container type: :naked
 
   binary "usr/lib/chatgpt/codex-launcher", target: "chatgpt"

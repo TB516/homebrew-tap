@@ -1,9 +1,9 @@
 cask "chatgpt-linux" do
   arch arm: "arm64", intel: "amd64"
 
-  version "26.803.81509"
-  sha256 arm64_linux:  "f38fcc194eca9ab0327dc10c92340681eae77c5d75164df700384ce2adaccbc1",
-         x86_64_linux: "a9bf91a368f9f7c4eea38082a9fb8fb46b8d005b719a6d7715d2e5a1982c38eb"
+  version "26.810.50856"
+  sha256 arm64_linux:  "ab851b2eb73374229f8daa17993d06c9d031094d0eeac5e7f4e02c072a110f62",
+         x86_64_linux: "e3b47c1298e01e4a2aa54f120eb169834c6911bd295122bc43e5cd1642c1a4ba"
 
   url "https://persistent.oaistatic.com/codex-app-prod/linux/deb/pool/main/c/chatgpt/chatgpt_#{version}_#{arch}.deb"
   name "ChatGPT"
@@ -16,7 +16,6 @@ cask "chatgpt-linux" do
   end
 
   depends_on :linux
-
   container type: :naked
 
   binary "usr/lib/chatgpt/codex-launcher", target: "chatgpt"
@@ -43,8 +42,6 @@ cask "chatgpt-linux" do
     File.write(desktop_file, desktop_contents)
   end
 
-  zap trash: [
-    ENV["CODEX_ELECTRON_USER_DATA_PATH"] ||
-      "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/Codex",
-  ]
+  zap trash: ENV["CODEX_ELECTRON_USER_DATA_PATH"] ||
+             "#{ENV["XDG_CONFIG_HOME"] || "#{Dir.home}/.config"}/Codex"
 end

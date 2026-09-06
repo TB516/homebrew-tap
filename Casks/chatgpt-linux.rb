@@ -18,23 +18,19 @@ cask "chatgpt-linux" do
   depends_on :linux
   container type: :naked
 
+  rename "chatgpt_#{version}_#{arch}.deb", "chatgpt.deb"
+
   binary "usr/lib/chatgpt/codex-launcher", target: "chatgpt"
   artifact "usr/share/applications/chatgpt.desktop",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/applications/chatgpt.desktop"
   artifact "usr/share/pixmaps/chatgpt.png",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/1024x1024/apps/chatgpt.png"
 
-  deb_name = "chatgpt_#{version}_#{arch}.deb"
-  xdg_data_home = ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"
-
   preflight_steps do
-    run "ar", args: ["x", deb_name, "data.tar.xz"], chdir: "."
+    run "ar", args: ["x", "chatgpt.deb", "data.tar.xz"], chdir: "."
     run "tar", args: ["-xf", "data.tar.xz"], chdir: "."
 
-    mkdir_p "#{xdg_data_home}/applications"
-    mkdir_p "#{xdg_data_home}/icons/hicolor/1024x1024/apps"
-
-    inreplace "usr/share/applications/chatgpt.desktop", /^Exec=.*$/, "Exec=#{HOMEBREW_PREFIX}/bin/chatgpt %U"
+    inreplace "usr/share/applications/chatgpt.desktop", /^Exec=.*$/, "Exec={{HOMEBREW_PREFIX}}/bin/chatgpt %U"
   end
 
   zap trash: ENV["CODEX_ELECTRON_USER_DATA_PATH"] ||

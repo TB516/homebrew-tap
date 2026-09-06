@@ -17,24 +17,20 @@ cask "t3-code" do
   depends_on :linux
   depends_on arch: :x86_64
 
+  rename "T3-Code-#{version}-#{arch}.AppImage", "t3-code.AppImage"
+
   binary "squashfs-root/t3code", target: "t3code"
   artifact "squashfs-root/t3code.desktop",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/applications/t3code.desktop"
   artifact "squashfs-root/usr/share/icons/hicolor/512x512/apps/t3code.png",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/512x512/apps/t3code.png"
 
-  appimage_name = "T3-Code-#{version}-#{arch}.AppImage"
-  xdg_data_home = ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"
-
   preflight_steps do
-    set_permissions appimage_name, "+x", recursive: false
-    run "./#{appimage_name}", args: ["--appimage-extract"], base: :staged_path, chdir: "."
-
-    mkdir_p "#{xdg_data_home}/applications"
-    mkdir_p "#{xdg_data_home}/icons/hicolor/512x512/apps"
+    set_permissions "t3-code.AppImage", "+x", recursive: false
+    run "./t3-code.AppImage", args: ["--appimage-extract"], base: :staged_path, chdir: "."
 
     inreplace "squashfs-root/t3code.desktop", /^Exec=.*$/,
-              "Exec=env T3CODE_DISABLE_AUTO_UPDATE=1 #{HOMEBREW_PREFIX}/bin/t3code %U"
+              "Exec=env T3CODE_DISABLE_AUTO_UPDATE=1 {{HOMEBREW_PREFIX}}/bin/t3code %U"
     inreplace "squashfs-root/t3code.desktop", /^Name=.*$/, "Name=T3 Code"
     inreplace "squashfs-root/t3code.desktop", /^X-AppImage-Version=.*\n/, "", audit_result: false
   end

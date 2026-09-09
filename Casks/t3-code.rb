@@ -28,7 +28,7 @@ cask "t3-code" do
   preflight_steps do
     set_permissions "t3-code.AppImage", "+x", recursive: false
     remove "squashfs-root", recursive: true
-    run "./t3-code.AppImage", args: ["--appimage-extract"], base: :staged_path, chdir: "."
+    run "/bin/sh", args: ["-c", "./t3-code.AppImage --appimage-extract >/dev/null"], chdir: "."
 
     inreplace "squashfs-root/t3code.desktop", /^Exec=.*$/,
               "Exec=env T3CODE_DISABLE_AUTO_UPDATE=1 {{HOMEBREW_PREFIX}}/bin/t3code %U"

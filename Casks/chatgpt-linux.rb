@@ -24,7 +24,7 @@ cask "chatgpt-linux" do
   artifact "usr/share/applications/chatgpt.desktop",
            target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/applications/chatgpt.desktop"
   artifact "usr/share/pixmaps/chatgpt.png",
-           target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/1024x1024/apps/chatgpt.png"
+           target: "#{ENV["XDG_DATA_HOME"] || "#{Dir.home}/.local/share"}/icons/hicolor/512x512@2/apps/chatgpt.png"
 
   preflight_steps do
     run "ar", args: ["x", "chatgpt.deb", "data.tar.xz"], chdir: "."

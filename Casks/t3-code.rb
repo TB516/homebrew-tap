@@ -33,6 +33,8 @@ cask "t3-code" do
     inreplace "squashfs-root/t3code.desktop", /^Exec=.*$/,
               "Exec=env T3CODE_DISABLE_AUTO_UPDATE=1 {{HOMEBREW_PREFIX}}/bin/t3code %U"
     inreplace "squashfs-root/t3code.desktop", /^Name=.*$/, "Name=T3 Code"
+    inreplace "squashfs-root/t3code.desktop", /^StartupWMClass=.*$/,
+              "StartupWMClass=com.t3tools.T3Code"
     inreplace "squashfs-root/t3code.desktop", /^X-AppImage-Version=.*\n/, "", audit_result: false
   end
 

@@ -1,9 +1,9 @@
 cask "chatgpt-linux" do
   arch arm: "arm64", intel: "amd64"
 
-  version "26.915.31029"
-  sha256 arm64_linux:  "5c01ce35eccea9e95d16de052c74f16deed381408931e82b106d7dbeeed8de4a",
-         x86_64_linux: "932825b76a41e80643204a9aa9ccfd1cb2471ffbfcbe1d314994360fcaaffb35"
+  version "26.915.31945"
+  sha256 arm64_linux:  "b94c494b5f0fd7c720fa6fccd5ef609879affc62332ca930ed29b907d537bc6d",
+         x86_64_linux: "d27a9c02919cfe484dcc5f34584b9ea9fd0d7a65c69dcc872b5bdcfa0efb5983"
 
   url "https://persistent.oaistatic.com/codex-app-prod/linux/deb/pool/main/c/chatgpt/chatgpt_#{version}_#{arch}.deb"
   name "ChatGPT"
